@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - name: python-app
+        image: python:3.9-slim
+        envFrom:
+        - configMapRef:
+            name: app-config
+        command: ["python", "-c", "import os; print(f'Environment: {os.getenv(\"APP_ENV\")}, Debug: {os.getenv(\"APP_DEBUG\")}')"]
